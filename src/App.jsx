@@ -297,6 +297,7 @@ const App = () => {
           subtopicName={selectedSubtopic?.name}
           chapterName={selectedChapter?.name}
           onBack={handleBack}
+          onGoHome={() => { setSelectedChapter(null); setSelectedSubtopic(null); setView('dashboard') }}
           onSettings={() => setView('settings')}
         />
       )}

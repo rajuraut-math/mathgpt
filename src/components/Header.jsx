@@ -30,7 +30,7 @@ const CrownIcon = () => (
 
 const BACK_VIEWS = ['subtopicList', 'diagnostic', 'tutorChat', 'practice', 'upgrade', 'settings']
 
-const Header = ({ view, isPremium, subtopicName, chapterName, onBack, onSettings }) => {
+const Header = ({ view, isPremium, subtopicName, chapterName, onBack, onGoHome, onSettings }) => {
   const showBack = BACK_VIEWS.includes(view)
   const showSubtitle = (view === 'tutorChat' || view === 'practice' || view === 'diagnostic') && subtopicName
   const showChapter = (view === 'subtopicList') && chapterName
@@ -40,13 +40,22 @@ const Header = ({ view, isPremium, subtopicName, chapterName, onBack, onSettings
       <div className="flex items-center h-14 px-4 gap-3">
         {/* Back button or Logo */}
         {showBack ? (
-          <button
-            onClick={onBack}
-            className="p-2 -ml-2 rounded-xl hover:bg-slate-100 transition-colors text-slate-600"
-            aria-label="Go back"
-          >
-            <BackIcon />
-          </button>
+          <div className="flex items-center gap-1 -ml-2">
+            <button
+              onClick={onBack}
+              className="p-2 rounded-xl hover:bg-slate-100 transition-colors text-slate-600"
+              aria-label="Go back"
+            >
+              <BackIcon />
+            </button>
+            <button
+              onClick={onGoHome}
+              className="p-1.5 rounded-xl hover:bg-slate-100 transition-colors text-blue-600"
+              aria-label="Go to home"
+            >
+              <BrainIcon />
+            </button>
+          </div>
         ) : (
           <div className="text-blue-600">
             <BrainIcon />
