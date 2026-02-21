@@ -38,7 +38,7 @@ const ThinkingDots = () => (
   </div>
 )
 
-const DiagnosticScreen = ({ subtopic, chapter, grade, mathType, language, onComplete, onBack }) => {
+const DiagnosticScreen = ({ subtopic, chapter, grade, mathType, language, onComplete, onBack, onGoHome }) => {
   const [phase, setPhase] = useState('loading') // loading | questions | evaluating | result | error
   const [questions, setQuestions] = useState([])
   const [currentQ, setCurrentQ] = useState(0)
@@ -79,7 +79,11 @@ const DiagnosticScreen = ({ subtopic, chapter, grade, mathType, language, onComp
       setAnswers(new Array(Math.min(parsed.length, 4)).fill(null))
       setPhase('questions')
     } catch (err) {
-      setError(err.message || 'Failed to generate questions.')
+      const msg = err.message || 'Failed to generate questions.'
+      const isBilling = msg.toLowerCase().includes('credit') || msg.toLowerCase().includes('billing') || msg.toLowerCase().includes('balance')
+      setError(isBilling
+        ? 'API credits are exhausted. Please top up your Anthropic account at console.anthropic.com → Billing, then come back.'
+        : msg)
       setPhase('error')
     }
   }
@@ -156,18 +160,24 @@ const DiagnosticScreen = ({ subtopic, chapter, grade, mathType, language, onComp
         <div className="text-4xl">⚠️</div>
         <h2 className="font-bold text-slate-700 text-lg">Oops!</h2>
         <p className="text-slate-500 text-sm max-w-xs">{error}</p>
-        <div className="flex gap-3">
+        <div className="flex flex-col gap-3 w-full max-w-xs">
           <button
             onClick={generateQuestions}
-            className="px-5 py-2.5 bg-blue-600 text-white rounded-xl font-semibold text-sm hover:bg-blue-700"
+            className="w-full px-5 py-2.5 bg-blue-600 text-white rounded-xl font-semibold text-sm hover:bg-blue-700"
           >
             Try Again
           </button>
           <button
             onClick={() => onComplete('Needs Revision')}
-            className="px-5 py-2.5 bg-slate-100 text-slate-700 rounded-xl font-semibold text-sm hover:bg-slate-200"
+            className="w-full px-5 py-2.5 bg-slate-100 text-slate-700 rounded-xl font-semibold text-sm hover:bg-slate-200"
           >
             Skip Diagnostic
+          </button>
+          <button
+            onClick={onGoHome}
+            className="w-full px-5 py-2.5 bg-white border border-slate-200 text-slate-600 rounded-xl font-semibold text-sm hover:bg-slate-50"
+          >
+            ← Go Home
           </button>
         </div>
       </div>

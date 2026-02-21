@@ -229,6 +229,7 @@ const App = () => {
             language={userLanguage}
             onComplete={handleDiagnosticComplete}
             onBack={() => setView('subtopicList')}
+            onGoHome={() => { setSelectedChapter(null); setSelectedSubtopic(null); setView('dashboard') }}
           />
         )
 
